@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encoders: Guía Interactiva, Simulador y Fundamentos Técnicos</title>
+  <meta name="description" content="Aprende qué es un encoder, cómo funciona la cuadratura óptica/magnética, tipos incrementales y absolutos, ventajas, desventajas y experimenta con el simulador interactivo en tiempo real.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-grid"></div>
+
+  <!-- Navbar -->
+  <header class="header-nav" id="top-nav">
+    <div class="nav-container">
+      <div class="logo-area">
+        <div class="logo-pulse">
+          <span class="disc-icon"></span>
+        </div>
+        <div class="logo-text">
+          <span class="brand-title">ENCODER<span class="accent-text">LAB</span></span>
+          <span class="brand-sub">SISTEMAS DE POSICIONAMIENTO</span>
+        </div>
+      </div>
+      
+      <nav class="nav-links">
+        <a href="#que-es" class="nav-link">¿Qué es?</a>
+        <a href="#como-funciona" class="nav-link">Funcionamiento</a>
+        <a href="#simulador" class="nav-link highlight">Simulador 360°</a>
+        <a href="#tipos" class="nav-link">Tipos</a>
+        <a href="#pros-cons" class="nav-link">Pros y Contras</a>
+        <a href="#aplicaciones" class="nav-link">Aplicaciones</a>
+        <a href="#selector-quiz" class="nav-link">Asistente & Quiz</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="quick-sim-btn" class="btn-primary-sm" onclick="document.getElementById('simulador').scrollIntoView({behavior: 'smooth'})">
+          <span class="pulse-dot"></span> Probar Simulador
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section" id="hero">
+    <div class="hero-badge">
+      <span class="badge-icon">⚡</span>
+      <span>Control de Movimiento & Automatización Industrial</span>
+    </div>
+    <h1 class="hero-title">
+      El Ojo Digital del <br>
+      <span class="gradient-text">Movimiento Mecánico</span>
+    </h1>
+    <p class="hero-subtitle">
+      Descubre cómo un <strong>encoder</strong> traduce el giro milimétrico y la velocidad angular de un eje en señales digitales de alta precisión que gobiernan la robótica moderna, máquinas CNC y servomotores.
+    </p>
+
+    <div class="hero-cta-group">
+      <a href="#simulador" class="btn-hero-primary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+        Entrar al Simulador en Vivo
+      </a>
+      <a href="#como-funciona" class="btn-hero-secondary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+        Aprender Principio Físico
+      </a>
+    </div>
+
+    <!-- Live telemetry teaser strip -->
+    <div class="telemetry-ticker">
+      <div class="ticker-item"><span class="ticker-label">RESOLUCIÓN TÍPICA:</span> <span class="ticker-val">100 a 65,536 PPR</span></div>
+      <div class="ticker-sep">/</div>
+      <div class="ticker-item"><span class="ticker-label">MODO DE SEÑAL:</span> <span class="ticker-val">Cuadratura A / B (90° desfase)</span></div>
+      <div class="ticker-sep">/</div>
+      <div class="ticker-item"><span class="ticker-label">TECNOLOGÍAS:</span> <span class="ticker-val">Óptica · Magnética · Capacitiva</span></div>
+      <div class="ticker-sep">/</div>
+      <div class="ticker-item"><span class="ticker-label">RETROALIMENTACIÓN:</span> <span class="ticker-val">Lazo Cerrado PID</span></div>
+    </div>
+  </section>
+
+  <!-- Section 1: ¿Qué es un Encoder? -->
+  <section class="content-section" id="que-es">
+    <div class="section-header">
+      <div class="section-tag">CONCEPTOS CLAVE</div>
+      <h2 class="section-title">¿Qué es un Encoder?</h2>
+      <p class="section-description">
+        Un <strong>encoder</strong> (o codificador rotatorio/lineal) es un sensor electro-opto-mecánico que convierte la posición angular o el movimiento lineal de un eje en señales eléctricas legibles por un controlador digital (PLC, microcontrolador o driver de motor).
+      </p>
+    </div>
+
+    <div class="concepts-grid">
+      <div class="concept-card active-card">
+        <div class="card-icon optical-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"></circle><path d="M2 12c3.5-6 8.5-6 10-6s6.5 0 10 6c-3.5 6-8.5 6-10 6s-6.5 0-10-6z"></path></svg>
+        </div>
+        <div class="card-tag">TECNOLOGÍA 01</div>
+        <h3>Encoder Óptico</h3>
+        <p>Utiliza un disco transparente de vidrio o polímero con franjas opacas, un emisor infrarrojo (LED) y un conjunto de fototransistores. Es el estándar de oro en máxima precisión.</p>
+        <ul class="feature-bullets">
+          <li><strong>Alta resolución:</strong> Más de 10,000 pulsos por vuelta.</li>
+          <li><strong>Velocidad de respuesta:</strong> Inmune a interferencias electromagnéticas moderadas.</li>
+          <li><strong>Sensibilidad:</strong> Vulnerable al polvo denso, vibración y condensación.</li>
+        </ul>
+      </div>
+
+      <div class="concept-card">
+        <div class="card-icon magnetic-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="8" width="18" height="8" rx="2"></rect><path d="M7 8V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3"></path><line x1="8" y1="12" x2="8" y2="12.01"></line><line x1="16" y1="12" x2="16" y2="12.01"></line></svg>
+        </div>
+        <div class="card-tag">TECNOLOGÍA 02</div>
+        <h3>Encoder Magnético</h3>
+        <p>Basa su lectura en un disco magnetizado con polos alternados (N/S) y sensores de efecto Hall o magnetoresistivos (AMR/GMR). Ideal para ambientes hostiles.</p>
+        <ul class="feature-bullets">
+          <li><strong>Ultra robusto:</strong> Sellado total contra aceite, polvo y agua (IP67/IP69K).</li>
+          <li><strong>Sin piezas frágiles:</strong> Gran resistencia a impactos mecánicos.</li>
+          <li><strong>Cuidado:</strong> Puede afectarse por campos magnéticos externos intensos.</li>
+        </ul>
+      </div>
+
+      <div class="concept-card">
+        <div class="card-icon capacitive-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3v18"></path><path d="M18 3v18"></path><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line></svg>
+        </div>
+        <div class="card-tag">TECNOLOGÍA 03</div>
+        <h3>Encoder Capacitivo / Inductivo</h3>
+        <p>Funciona midiendo la variación de capacitancia o reluctancia cuando un rotor con patrón sinusoidal modula el acoplamiento electrostático entre placas.</p>
+        <ul class="feature-bullets">
+          <li><strong>Bajo consumo de energía:</strong> Muy utilizado en instrumentación médica y aeroespacial.</li>
+          <li><strong>Alta repetibilidad:</strong> Excelente relación entre tamaño compacto y precisión.</li>
+          <li><strong>Económico en masa:</strong> Circuitos integrados basados en PCB de bajo costo.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Anatomy of an Encoder SVG Schematic -->
+    <div class="anatomy-box">
+      <div class="anatomy-text">
+        <span class="badge-mini">ANATOMÍA INTERNA</span>
+        <h3>¿Qué hay dentro de un Encoder Rotativo Óptico?</h3>
+        <p>Un conjunto mecánico de precisión compuesto por un eje sobre rodamientos estancos, un disco graduado con ranuras microscópicas, una máscara de lectura colimada y una etapa electrónica con amplificador y disparador Schmitt para producir ondas cuadradas limpias.</p>
+        
+        <div class="anatomy-steps">
+          <div class="step-chip"><span class="step-num">1</span> Eje Mecánico</div>
+          <div class="step-chip"><span class="step-num">2</span> Disco Ranurado</div>
+          <div class="step-chip"><span class="step-num">3</span> LED Infrarrojo</div>
+          <div class="step-chip"><span class="step-num">4</span> Fotodiodos A/B/Z</div>
+          <div class="step-chip"><span class="step-num">5</span> Circuito de Salida</div>
+        </div>
+      </div>
+
+      <div class="anatomy-diagram-wrapper">
+        <svg class="anatomy-svg" viewBox="0 0 500 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="discGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#1e293b"/>
+              <stop offset="100%" stop-color="#0f172a"/>
+            </linearGradient>
+            <linearGradient id="beamGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#ff0055" stop-opacity="0.8"/>
+              <stop offset="100%" stop-color="#ff5500" stop-opacity="0.2"/>
+            </linearGradient>
+            <filter id="glowEffect" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+
+          <!-- Shaft -->
+          <rect x="20" y="105" width="120" height="30" rx="4" fill="#334155" stroke="#64748b" stroke-width="2"/>
+          <line x1="20" y1="120" x2="140" y2="120" stroke="#94a3b8" stroke-dasharray="4 2"/>
+          <text x="80" y="95" fill="#94a3b8" font-size="11" text-anchor="middle" font-family="'JetBrains Mono', monospace">EJE MOTOR</text>
+
+          <!-- Encoder Disk (profile perspective) -->
+          <ellipse cx="180" cy="120" rx="16" ry="85" fill="url(#discGrad)" stroke="#00f0ff" stroke-width="2"/>
+          <!-- Slots representation -->
+          <path d="M 180 50 Q 183 50 180 65 M 180 75 Q 183 75 180 90 M 180 150 Q 183 150 180 165 M 180 175 Q 183 175 180 190" stroke="#00f0ff" stroke-width="3" stroke-linecap="round"/>
+          <text x="180" y="225" fill="#00f0ff" font-size="11" text-anchor="middle" font-family="'JetBrains Mono', monospace">DISCO RANURADO</text>
+
+          <!-- Emitter LED -->
+          <rect x="235" y="80" width="30" height="25" rx="3" fill="#ff0055" filter="url(#glowEffect)"/>
+          <text x="250" y="70" fill="#ff5577" font-size="10" text-anchor="middle" font-family="'JetBrains Mono', monospace">LED IR</text>
+
+          <!-- Light Beam traveling through disk slots -->
+          <polygon points="235,85 180,95 180,145 235,155" fill="url(#beamGrad)" opacity="0.45"/>
+          <line x1="235" y1="92" x2="310" y2="92" stroke="#ff0055" stroke-width="2" stroke-dasharray="3 3"/>
+          <line x1="235" y1="148" x2="310" y2="148" stroke="#00ff88" stroke-width="2" stroke-dasharray="3 3"/>
+
+          <!-- Receiver Photodiodes -->
+          <rect x="310" y="75" width="32" height="34" rx="3" fill="#1e293b" stroke="#00f0ff" stroke-width="1.5"/>
+          <text x="326" y="96" fill="#00f0ff" font-size="10" font-weight="bold" text-anchor="middle" font-family="'JetBrains Mono', monospace">A</text>
+          
+          <rect x="310" y="130" width="32" height="34" rx="3" fill="#1e293b" stroke="#00ff88" stroke-width="1.5"/>
+          <text x="326" y="151" fill="#00ff88" font-size="10" font-weight="bold" text-anchor="middle" font-family="'JetBrains Mono', monospace">B</text>
+
+          <text x="326" y="185" fill="#cbd5e1" font-size="10" text-anchor="middle" font-family="'JetBrains Mono', monospace">FOTODETECTORES</text>
+
+          <!-- Signal Conditioner / Schmitt trigger box -->
+          <rect x="385" y="70" width="95" height="100" rx="6" fill="#0b1329" stroke="#3b82f6" stroke-width="1.5"/>
+          <text x="432" y="90" fill="#93c5fd" font-size="9" text-anchor="middle" font-weight="bold" font-family="'JetBrains Mono', monospace">COMPARADOR</text>
+          <text x="432" y="103" fill="#64748b" font-size="8" text-anchor="middle" font-family="'JetBrains Mono', monospace">SCHMITT TRIGGER</text>
+
+          <!-- Wave outputs -->
+          <path d="M 405 125 h 10 v -12 h 15 v 12 h 15 v -12 h 15" stroke="#00f0ff" stroke-width="2" fill="none"/>
+          <path d="M 412 155 h 10 v -12 h 15 v 12 h 15 v -12 h 8" stroke="#00ff88" stroke-width="2" fill="none"/>
+          <text x="432" y="185" fill="#38bdf8" font-size="10" text-anchor="middle" font-family="'JetBrains Mono', monospace">PULSOS TTL (0/5V)</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: ¿Cómo Funciona la Cuadratura? -->
+  <section class="content-section" id="como-funciona">
+    <div class="section-header">
+      <div class="section-tag">EL SECRETO DE LA CUADRATURA</div>
+      <h2 class="section-title">¿Cómo Funciona? Desfase de 90° y Sentido de Giro</h2>
+      <p class="section-description">
+        Un solo sensor solo puede contar pulsos, pero no sabe si el eje gira a la derecha o a la izquierda. Al colocar dos fotodetectores espaciados con un desfase de <strong>90 grados eléctricos (un cuarto de ciclo)</strong>, ¡ocurre la magia!
+      </p>
+    </div>
+
+    <div class="quadrature-explainer-grid">
+      <!-- Logic explanations -->
+      <div class="quadrature-info">
+        <div class="quad-step-card">
+          <div class="quad-badge cw">GIRO HORARIO (CW ↻)</div>
+          <h4>El Canal A se adelanta al Canal B</h4>
+          <p>Cuando el disco gira en sentido horario, la ranura pasa primero frente al fotodiodo A. Por tanto, el flanco de subida de la onda <strong>A</strong> ocurre antes que el de la onda <strong>B</strong>.</p>
+          <div class="state-sequence">Secuencia de estados: <code>00 &rarr; 10 &rarr; 11 &rarr; 01 &rarr; 00</code></div>
+        </div>
+
+        <div class="quad-step-card">
+          <div class="quad-badge ccw">GIRO ANTIHORARIO (CCW ↺)</div>
+          <h4>El Canal B se adelanta al Canal A</h4>
+          <p>Al invertir el sentido físico de giro, las ranuras pasan en orden opuesto: el fotodiodo B detecta la luz primero, por lo que <strong>B</strong> lidera la señal antes que <strong>A</strong>.</p>
+          <div class="state-sequence">Secuencia de estados: <code>00 &rarr; 01 &rarr; 11 &rarr; 10 &rarr; 00</code></div>
+        </div>
+
+        <div class="quad-step-card">
+          <div class="quad-badge index-z">CANAL ÍNDICE (Z / INDEX)</div>
+          <h4>Un solo pulso por revolución (Home)</h4>
+          <p>El canal Z genera un único pulso ultrapreciso cada vez que el disco completa 360°. Se utiliza para calibrar el "Cero Máquina" o punto de referencia absoluto.</p>
+        </div>
+      </div>
+
+      <!-- Interactive Multiplier Mode & State Visualizer -->
+      <div class="quadrature-interactive-box">
+        <div class="box-header">
+          <h3>Multiplicación de Resolución (X1, X2, X4)</h3>
+          <span class="badge-mini">DECODIFICADOR QEI</span>
+        </div>
+        <p class="box-desc">
+          Al analizar no solo los flancos de subida sino también los de bajada de ambos canales en hardware (como el periférico QEI de un microcontrolador), la resolución efectiva se multiplica sin cambiar el disco físico.
+        </p>
+
+        <div class="multi-selector">
+          <button class="mult-btn" data-mode="x1" onclick="setDecodingMode('x1')">
+            <strong>Modo X1</strong>
+            <span>Flanco subida A (1x PPR)</span>
+          </button>
+          <button class="mult-btn active" data-mode="x2" onclick="setDecodingMode('x2')">
+            <strong>Modo X2</strong>
+            <span>Subida y bajada A (2x PPR)</span>
+          </button>
+          <button class="mult-btn" data-mode="x4" onclick="setDecodingMode('x4')">
+            <strong>Modo X4</strong>
+            <span>Todos los flancos A y B (4x PPR)</span>
+          </button>
+        </div>
+
+        <!-- Dynamic resolution calculation card -->
+        <div class="res-calc-card">
+          <div class="calc-row">
+            <span>Pulsos Base del Disco (PPR):</span>
+            <strong id="calc-base-ppr">24 PPR</strong>
+          </div>
+          <div class="calc-row">
+            <span>Factor de Decodificación:</span>
+            <strong id="calc-multiplier" class="accent-text">x2</strong>
+          </div>
+          <div class="calc-row highlight-row">
+            <span>Cuentas efectivas por vuelta (CPR):</span>
+            <strong id="calc-total-cpr">48 Cuentas</strong>
+          </div>
+          <div class="calc-row">
+            <span>Resolución angular por pulso:</span>
+            <strong id="calc-angle-res">7.50° por cuenta</strong>
+          </div>
+        </div>
+
+        <!-- Interactive 4-state circular phase diagram -->
+        <div class="phase-wheel-container">
+          <div class="phase-ring-wrapper">
+            <div class="phase-quadrant q0 active" id="quad-00"><span>00</span><small>A=0, B=0</small></div>
+            <div class="phase-quadrant q1" id="quad-10"><span>10</span><small>A=1, B=0</small></div>
+            <div class="phase-quadrant q2" id="quad-11"><span>11</span><small>A=1, B=1</small></div>
+            <div class="phase-quadrant q3" id="quad-01"><span>01</span><small>A=0, B=1</small></div>
+            <div class="phase-needle" id="phase-needle"></div>
+          </div>
+          <div class="phase-caption">
+            <span id="current-state-caption">Estado actual: <strong>A=0, B=0 (00)</strong></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: SIMULADOR INTERACTIVO PRINCIPAL -->
+  <section class="simulator-section" id="simulador">
+    <div class="sim-header-container">
+      <div class="section-tag glow-tag">LABORATORIO EN VIVO</div>
+      <h2 class="section-title">Simulador de Encoder Rotativo en Cuadratura</h2>
+      <p class="section-description">
+        Arrastra el disco con el mouse/dedo, o enciende el motor automático para ver en tiempo real cómo se generan las ondas cuadradas en el osciloscopio digital, se detecta el sentido de giro y se cuentan los pulsos.
+      </p>
+    </div>
+
+    <!-- Main Simulator Workbench -->
+    <div class="workbench-grid">
+      
+      <!-- Left Column: The Physical Rotary Encoder Canvas -->
+      <div class="bench-panel disk-panel">
+        <div class="panel-header">
+          <span class="panel-title">DISCO ÓPTICO DEL ENCODER</span>
+          <span class="status-indicator" id="disk-status-led">INACTIVO</span>
+        </div>
+
+        <div class="disk-canvas-wrapper" id="disk-container">
+          <canvas id="encoderDiskCanvas" width="420" height="420"></canvas>
+          <div class="disk-drag-hint" id="drag-hint">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+            <span>Haz clic y arrastra para girar</span>
+          </div>
+        </div>
+
+        <!-- Controls below the disk -->
+        <div class="disk-controls-grid">
+          <div class="control-btn-group">
+            <button id="motor-toggle-btn" class="ctrl-btn btn-motor-start" onclick="toggleMotor()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>Motor Auto-Giro</span>
+            </button>
+            <button id="motor-dir-btn" class="ctrl-btn" onclick="toggleMotorDirection()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+              <span>Invertir (CW/CCW)</span>
+            </button>
+            <button class="ctrl-btn" onclick="resetEncoderCounters()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span>Reset Posición (0°)</span>
+            </button>
+          </div>
+
+          <!-- Speed slider & audio toggle -->
+          <div class="control-row">
+            <div class="slider-container">
+              <label for="speed-slider">Velocidad del Motor: <span id="speed-label" class="bold-cyan">30 RPM</span></label>
+              <input type="range" id="speed-slider" min="5" max="120" value="30" oninput="updateMotorSpeed(this.value)">
+            </div>
+            <div class="slider-container">
+              <label for="slots-select">Ranuras Físicas (PPR):</label>
+              <select id="slots-select" onchange="changePPR(this.value)">
+                <option value="12">12 Ranuras (Baja resolución)</option>
+                <option value="24" selected>24 Ranuras (Estándar de demo)</option>
+                <option value="48">48 Ranuras (Alta densidad)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="toggle-row">
+            <label class="switch-container">
+              <input type="checkbox" id="audio-toggle" onchange="toggleAudio(this.checked)">
+              <span class="switch-slider"></span>
+              <span class="switch-label">🔊 Sonido de Clicks Mecánicos (Audio Sintetizado)</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Oscilloscope and Telemetry -->
+      <div class="bench-panel scope-panel">
+        <div class="panel-header">
+          <span class="panel-title">OSCILOSCOPIO DIGITAL DE 3 CANALES</span>
+          <div class="scope-legend">
+            <span class="legend-badge ch-a"><span class="led-dot a"></span> CH A</span>
+            <span class="legend-badge ch-b"><span class="led-dot b"></span> CH B (90°)</span>
+            <span class="legend-badge ch-z"><span class="led-dot z"></span> CH Z (Index)</span>
+          </div>
+        </div>
+
+        <!-- The Oscilloscope Canvas -->
+        <div class="oscilloscope-wrapper">
+          <canvas id="scopeCanvas" width="580" height="230"></canvas>
+          <div class="scope-grid-overlay"></div>
+          <div class="scope-labels">
+            <span class="ch-label ch-a-txt">CH A (TTL 5V)</span>
+            <span class="ch-label ch-b-txt">CH B (TTL 5V)</span>
+            <span class="ch-label ch-z-txt">CH Z (1 ppr)</span>
+          </div>
+        </div>
+
+        <!-- Live Telemetry Readout Grid -->
+        <div class="telemetry-dashboard">
+          <div class="telem-card">
+            <div class="telem-title">ÁNGULO ABSOLUTO</div>
+            <div class="telem-value" id="telem-angle">0.0°</div>
+            <div class="telem-sub" id="telem-revs">Vueltas: 0</div>
+          </div>
+
+          <div class="telem-card highlight-card">
+            <div class="telem-title">SENTIDO DE GIRO</div>
+            <div class="telem-value" id="telem-dir"><span class="idle-text">DETENIDO</span></div>
+            <div class="telem-sub" id="telem-dir-sub">Frecuencia: 0.0 Hz</div>
+          </div>
+
+          <div class="telem-card">
+            <div class="telem-title">CUENTAS (PULSOS)</div>
+            <div class="telem-value bold-cyan" id="telem-pulses">0</div>
+            <div class="telem-sub" id="telem-cpr-sub">Modo X2 (48 CPR)</div>
+          </div>
+
+          <div class="telem-card">
+            <div class="telem-title">ESTADO LÓGICO BINARIO</div>
+            <div class="telem-bits">
+              <div class="bit-box" id="bit-a"><span>A</span><strong>0</strong></div>
+              <div class="bit-box" id="bit-b"><span>B</span><strong>0</strong></div>
+              <div class="bit-box" id="bit-z"><span>Z</span><strong>0</strong></div>
+            </div>
+            <div class="telem-sub" id="telem-index-status">Índice Z: En reposo</div>
+          </div>
+        </div>
+
+        <!-- Sensor Status Visualization Bar -->
+        <div class="photodiodes-live-bar">
+          <div class="photo-sensor" id="sensor-indicator-a">
+            <div class="sensor-light"></div>
+            <div class="sensor-meta">
+              <strong>Fotodiodo A</strong>
+              <span id="sensor-val-a">Bloqueado (0V)</span>
+            </div>
+          </div>
+          <div class="photo-sensor" id="sensor-indicator-b">
+            <div class="sensor-light"></div>
+            <div class="sensor-meta">
+              <strong>Fotodiodo B (+90°)</strong>
+              <span id="sensor-val-b">Bloqueado (0V)</span>
+            </div>
+          </div>
+          <div class="photo-sensor" id="sensor-indicator-z">
+            <div class="sensor-light"></div>
+            <div class="sensor-meta">
+              <strong>Sensor Índice Z</strong>
+              <span id="sensor-val-z">Fuera de muesca (0V)</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: Incremental vs Absoluto (Comparación Interactiva y Código Gray) -->
+  <section class="content-section" id="tipos">
+    <div class="section-header">
+      <div class="section-tag">ARQUITECTURA DE DATOS</div>
+      <h2 class="section-title">Incremental vs Absoluto: ¿Cuál es la Gran Diferencia?</h2>
+      <p class="section-description">
+        La elección entre un encoder incremental y uno absoluto define cómo reacciona tu máquina tras un corte de energía o apagón repentino.
+      </p>
+    </div>
+
+    <!-- Dual comparison interactive tabs -->
+    <div class="type-compare-wrapper">
+      <div class="type-card inc-card">
+        <div class="type-badge inc">TIPO 01</div>
+        <h3>Encoder Incremental</h3>
+        <p class="type-summary">Mide <strong>cambios relativos</strong> de posición. Solo sabe cuántos pasos se ha movido desde que se encendió el sistema.</p>
+        
+        <div class="type-illustration">
+          <div class="track-demo single-track">
+            <div class="track-label">Pista única ranurada A/B:</div>
+            <div class="track-slots-preview">
+              <span class="slot"></span><span class="slot off"></span><span class="slot"></span><span class="slot off"></span><span class="slot"></span><span class="slot off"></span><span class="slot"></span><span class="slot off"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="power-scenario">
+          <div class="scenario-icon">⚠️</div>
+          <div class="scenario-content">
+            <strong>¿Qué pasa si se corta la luz?</strong>
+            <span>Pierde totalmente la posición real. Al reiniciar, la máquina está "ciega" y debe hacer una rutina de búsqueda de origen (Homing obligatorio).</span>
+          </div>
+        </div>
+
+        <div class="type-specs">
+          <div class="spec-item"><strong>Costo:</strong> Económico ($)</div>
+          <div class="spec-item"><strong>Cableado:</strong> 4 a 8 hilos (A, /A, B, /B, Z, /Z, VCC, GND)</div>
+          <div class="spec-item"><strong>Salida:</strong> Tren de pulsos TTL / HTL / Line Driver</div>
+        </div>
+      </div>
+
+      <div class="type-card abs-card">
+        <div class="type-badge abs">TIPO 02</div>
+        <h3>Encoder Absoluto</h3>
+        <p class="type-summary">Mide la <strong>posición exacta única</strong> en cada milésima de grado. Cada posición angular tiene su propia palabra de código digital irrepetible.</p>
+        
+        <div class="type-illustration">
+          <div class="track-demo multi-track">
+            <div class="track-label">Múltiples pistas concéntricas (Código Gray):</div>
+            <div class="track-slots-preview gray">
+              <div class="track-layer layer-4"><span class="b-wide"></span><span class="b-wide off"></span></div>
+              <div class="track-layer layer-3"><span class="b-med"></span><span class="b-med off"></span><span class="b-med"></span><span class="b-med off"></span></div>
+              <div class="track-layer layer-2"><span class="b-sm"></span><span class="b-sm off"></span><span class="b-sm"></span><span class="b-sm off"></span><span class="b-sm"></span><span class="b-sm off"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="power-scenario safe">
+          <div class="scenario-icon">🛡️</div>
+          <div class="scenario-content">
+            <strong>¿Qué pasa si se corta la luz?</strong>
+            <span>Conserva su posición. Si el eje se mueve mecánicamente estando apagado, al encender lee al instante la posición angular exacta sin moverse.</span>
+          </div>
+        </div>
+
+        <div class="type-specs">
+          <div class="spec-item"><strong>Costo:</strong> Mayor inversión ($$$)</div>
+          <div class="spec-item"><strong>Protocolos:</strong> SSI, BiSS-C, CANopen, Profinet, EtherCAT</div>
+          <div class="spec-item"><strong>Variantes:</strong> Monovuelta (Single-turn) y Multivuelta (Multi-turn con batería/engranajes)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Gray Code vs Binary Code Interactive Widget -->
+    <div class="gray-code-explainer">
+      <div class="gray-header">
+        <span class="badge-mini">¿POR QUÉ SE USA CÓDIGO GRAY Y NO BINARIO NATURAL?</span>
+        <h3>El Peligro de los Errores de Conmutación (Glitches)</h3>
+        <p>En el código binario natural, al pasar de un número al siguiente pueden cambiar varios bits a la vez (por ejemplo de 3 [011] a 4 [100] cambian los 3 bits). En el mundo real, los sensores mecánicos nunca conmutan al nanosegundo exacto, lo que causaría lecturas falsas astronómicas. En el <strong>Código Gray</strong>, <strong>¡solo cambia un solo bit entre estados adyacentes!</strong></p>
+      </div>
+
+      <div class="gray-interactive-slider">
+        <div class="slider-header-gray">
+          <span>Prueba mover la posición angular (0 a 7):</span>
+          <span class="step-num-display" id="gray-pos-num">Posición: 3</span>
+        </div>
+        <input type="range" id="gray-step-slider" min="0" max="7" value="3" oninput="updateGrayInteractive(this.value)">
+
+        <div class="gray-bits-compare-grid">
+          <!-- Binary representation -->
+          <div class="bit-card">
+            <span class="bit-card-type">BINARIO NATURAL</span>
+            <div class="bit-string" id="natural-binary-bits">0 1 1</div>
+            <div class="bit-warning" id="bin-glitch-warning">⚠️ Peligro: En paso 3&rarr;4 cambian 3 bits simultáneamente</div>
+          </div>
+
+          <div class="bit-arrow">&harr;</div>
+
+          <!-- Gray Code representation -->
+          <div class="bit-card safe-gray">
+            <span class="bit-card-type">CÓDIGO GRAY (SEGURO)</span>
+            <div class="bit-string" id="gray-code-bits">0 1 0</div>
+            <div class="bit-safe-badge">✓ Máxima seguridad: Solo conmuta 1 bit</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: Ventajas y Desventajas -->
+  <section class="content-section" id="pros-cons">
+    <div class="section-header">
+      <div class="section-tag">ANÁLISIS DE INGENIERÍA</div>
+      <h2 class="section-title">Ventajas y Desventajas</h2>
+      <p class="section-description">
+        Como todo componente mecatrónico, la selección de un encoder depende de un balance técnico entre precisión requerida, presupuesto y agresividad ambiental.
+      </p>
+    </div>
+
+    <div class="pros-cons-grid">
+      <!-- Advantages Column -->
+      <div class="pros-column">
+        <div class="column-header pros-head">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <h3>Ventajas Clave</h3>
+        </div>
+
+        <div class="pro-con-item">
+          <div class="bullet-tag pro">01</div>
+          <div class="item-body">
+            <h4>Control de Lazo Cerrado de Extrema Precisión</h4>
+            <p>Permite a los servomotores y sistemas robóticos corregir desviaciones en milisegundos, eliminando el error por pérdida de pasos típico de motores paso a paso en lazo abierto.</p>
+          </div>
+        </div>
+
+        <div class="pro-con-item">
+          <div class="bullet-tag pro">02</div>
+          <div class="item-body">
+            <h4>Resoluciones Gigantescas en Tamaños Compactos</h4>
+            <p>Mediante fotolitografía moderna, un encoder óptico de 50 mm de diámetro puede entregar más de 65,536 cuentas por revolución (más de 0.005° de resolución angular).</p>
+          </div>
+        </div>
+
+        <div class="pro-con-item">
+          <div class="bullet-tag pro">03</div>
+          <div class="item-body">
+            <h4>Inmunidad al Ruido Industrial con Líneas Diferenciales</h4>
+            <p>Los modelos con salida Line Driver (RS422: A, /A, B, /B) cancelan interferencias electromagnéticas por modo común provocadas por variadores de frecuencia (VFD) y motores pesados.</p>
+          </div>
+        </div>
+
+        <div class="pro-con-item">
+          <div class="bullet-tag pro">04</div>
+          <div class="item-body">
+            <h4>Amplia Variedad de Formatos y Buses</h4>
+            <p>Compatibilidad con interfaces universales directas a PLC: entradas de contador rápido (HSC), comunicaciones serie SSI/BiSS o buses de campo Ethernet en tiempo real (Profinet, EtherCAT).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Disadvantages Column -->
+      <div class="cons-column">
+        <div class="column-header cons-head">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          <h3>Desventajas y Desafíos</h3>
+        </div>
+
+        <div class="pro-con-item">
+          <div class="bullet-tag con">01</div>
+          <div class="item-body">
+            <h4>Vulnerabilidad Mecánica del Disco Óptico de Vidrio</h4>
+            <p>Los discos de vidrio de alta precisión pueden rajarse ante choques mecánicos violentos o caídas. En aplicaciones de alto impacto se deben utilizar discos de mylar o tecnología magnética.</p>
+          </div>
+        </div>
+
+        <div class="pro-con-item">
+          <div class="bullet-tag con">02</div>
+          <div class="item-body">
+            <h4>Sensibilidad a Contaminantes Ambientales</h4>
+            <p>El polvo denso, vapores de aceite de corte o condensación de agua en la superficie del disco óptico pueden oscurecer los haces de luz y generar pulsos perdidos o lecturas erráticas.</p>
+          </div>
+        </div>
+
+        <div class="pro-con-item">
+          <div class="bullet-tag con">03</div>
+          <div class="item-body">
+            <h4>Límite de Frecuencia Eléctrica y Velocidad Mecánica</h4>
+            <p>A velocidades muy altas (ej. 10,000 RPM con 5,000 PPR), la frecuencia de pulsos supera los MHz, exigiendo optoacopladores ultra veloces y cables apantallados de baja capacitancia.</p>
+          </div>
+        </div>
+
+        <div class="pro-con-item">
+          <div class="bullet-tag con">04</div>
+          <div class="item-body">
+            <h4>Costo Elevado en Modelos Absolutos Multivuelta</h4>
+            <p>Los encoders absolutos multivuelta con baterías integradas o cajas de engranajes microscópicas pueden costar hasta 10 veces más que un encoder incremental básico.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6: Aplicaciones en la Industria -->
+  <section class="content-section" id="aplicaciones">
+    <div class="section-header">
+      <div class="section-tag">CASOS DE USO INDUSTRIAL</div>
+      <h2 class="section-title">¿Dónde se Utilizan los Encoders?</h2>
+      <p class="section-description">
+        Desde los robots quirúrgicos más delicados hasta las grúas de contenedores en puertos marítimos, los encoders son indispensables.
+      </p>
+    </div>
+
+    <div class="apps-grid">
+      <div class="app-card">
+        <div class="app-icon">🤖</div>
+        <h4>Brazos Robóticos y Cobots</h4>
+        <p>Cada articulación rotativa cuenta con encoders absolutos para conocer la postura espacial exacta del efector final, garantizando seguridad colaborativa humana.</p>
+        <span class="app-pill">Encoder Absoluto Hueco (Hollow Shaft)</span>
+      </div>
+
+      <div class="app-card">
+        <div class="app-icon">⚙️</div>
+        <h4>Máquinas CNC y Centros de Torneado</h4>
+        <p>Garantizan el posicionamiento micrométrico en husillos de bolas (ejes X, Y, Z) y la sincronización milimétrica para operaciones de roscado rígido.</p>
+        <span class="app-pill">Lineal Óptico & Rotativo Line Driver</span>
+      </div>
+
+      <div class="app-card">
+        <div class="app-icon">🏎️</div>
+        <h4>Vehículos Eléctricos y Automotriz</h4>
+        <p>Montados en el rotor de motores síncronos de imanes permanentes (PMSM) para la conmutación electrónica precisa de los inversores de tracción.</p>
+        <span class="app-pill">Encoder Magnético / Resolver</span>
+      </div>
+
+      <div class="app-card">
+        <div class="app-icon">🛗</div>
+        <h4>Ascensores y Grúas Puente</h4>
+        <p>Controlan las curvas de aceleración y desaceleración suave, el nivelado exacto de cabina en cada piso y los sistemas de frenado de emergencia.</p>
+        <span class="app-pill">Incremental Pesado IP67</span>
+      </div>
+
+      <div class="app-card">
+        <div class="app-icon">🖨️</div>
+        <h4>Impresoras 3D y Plotters Industriales</h4>
+        <p>Las cintas transparentes con micropistas que atraviesan el cabezal de impresión son encoders ópticos lineales que aseguran gotas de tinta exactas.</p>
+        <span class="app-pill">Encoder Óptico Lineal</span>
+      </div>
+
+      <div class="app-card">
+        <div class="app-icon">🎛️</div>
+        <h4>Instrumentación de Audio y HMIs</h4>
+        <p>Las perillas digitales de giro continuo en sintetizadores, equipos médicos y controles automotrices son pequeños encoders rotativos de cuadratura mecánicos.</p>
+        <span class="app-pill">Encoder Mecánico de Contacto</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 7: Asistente Interactivo de Selección & Quiz de Evaluación -->
+  <section class="content-section" id="selector-quiz">
+    <div class="dual-interactive-container">
+      
+      <!-- Left Tool: Encoder Recommendation Wizard -->
+      <div class="interactive-tool-box" id="wizard-box">
+        <div class="tool-tag">ASISTENTE DE INGENIERÍA</div>
+        <h3>¿Qué tipo de Encoder necesitas?</h3>
+        <p class="tool-desc">Responde 3 preguntas rápidas y el sistema te recomendará la tecnología y configuración ideal para tu proyecto.</p>
+
+        <form id="wizard-form" onsubmit="event.preventDefault(); calculateRecommendation();">
+          <div class="wizard-group">
+            <label class="wizard-label">1. ¿Qué tipo de movimiento vas a medir?</label>
+            <select id="wiz-motion" class="wizard-select">
+              <option value="rotary">Rotación continua en un eje (Motores, rodillos, perillas)</option>
+              <option value="linear">Desplazamiento en línea recta (Guías, pistones, mesas)</option>
+            </select>
+          </div>
+
+          <div class="wizard-group">
+            <label class="wizard-label">2. ¿Es crítico mantener la posición tras un apagón sin homing?</label>
+            <select id="wiz-memory" class="wizard-select">
+              <option value="critical">Sí, es crítico (Robots, grúas, válvulas sin opción de calibración)</option>
+              <option value="not_critical">No, puedo hacer homing al encender (Impresoras 3D, cintas transportadoras)</option>
+            </select>
+          </div>
+
+          <div class="wizard-group">
+            <label class="wizard-label">3. ¿Cómo es el entorno ambiental de trabajo?</label>
+            <select id="wiz-env" class="wizard-select">
+              <option value="harsh">Hostil (Polvo, viruta metálica, aceite de corte, humedad IP67)</option>
+              <option value="clean">Limpio y controlado (Laboratorio, electrónica de consumo, salas limpias)</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-primary-block">Obtener Recomendación Técnica</button>
+        </form>
+
+        <div id="wizard-result" class="wizard-result-box hidden">
+          <div class="result-badge" id="res-badge">RECOMENDACIÓN FINAL</div>
+          <h4 id="res-title">Encoder Óptico Incremental Line Driver</h4>
+          <p id="res-explanation">Explicación técnica detallada...</p>
+          <div class="res-recommended-tags" id="res-tags"></div>
+        </div>
+      </div>
+
+      <!-- Right Tool: Interactive Knowledge Quiz -->
+      <div class="interactive-tool-box quiz-box" id="quiz-container">
+        <div class="tool-tag">EVALÚA TUS CONOCIMIENTOS</div>
+        <h3>Quiz Técnico sobre Encoders</h3>
+        <p class="tool-desc">Comprueba si dominas el principio de cuadratura, el canal Z y la diferencia entre incremental y absoluto.</p>
+
+        <div id="quiz-question-card" class="quiz-card">
+          <div class="quiz-progress-bar"><div id="quiz-progress-fill" style="width: 20%;"></div></div>
+          <div class="quiz-q-meta">Pregunta <span id="quiz-current-num">1</span> de 5</div>
+          <h4 id="quiz-q-text">Cargando pregunta...</h4>
+          <div class="quiz-options-list" id="quiz-options"></div>
+          <div id="quiz-feedback" class="quiz-feedback hidden"></div>
+          <button id="quiz-next-btn" class="btn-quiz-next hidden" onclick="nextQuizQuestion()">Siguiente Pregunta &rarr;</button>
+        </div>
+
+        <div id="quiz-final-score" class="quiz-final-score hidden">
+          <div class="score-circle" id="score-circle">5/5</div>
+          <h4 id="score-title">¡Excelente! Eres un Experto en Encoders</h4>
+          <p id="score-desc">Has demostrado un entendimiento profundo sobre sistemas de retroalimentación de movimiento.</p>
+          <button class="btn-secondary-sm" onclick="restartQuiz()">Reiniciar Quiz</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Technical Glossary & Summary Modal or Collapsible -->
+  <section class="content-section glossary-section" id="glosario">
+    <div class="section-header">
+      <div class="section-tag">REFERENCIA RÁPIDA</div>
+      <h2 class="section-title">Glosario de Parámetros Técnicos</h2>
+    </div>
+
+    <div class="glossary-grid">
+      <div class="gloss-card">
+        <span class="gloss-term">PPR (Pulses Per Revolution)</span>
+        <p>Número de ciclos de onda cuadrada completos generados por el canal A en una vuelta de 360°.</p>
+      </div>
+      <div class="gloss-card">
+        <span class="gloss-term">CPR (Counts Per Revolution)</span>
+        <p>Total de estados lógicos computados tras la decodificación por cuadratura (hasta 4x PPR en modo X4).</p>
+      </div>
+      <div class="gloss-card">
+        <span class="gloss-term">Line Driver (RS-422)</span>
+        <p>Transmisión de señal diferencial complementaria (A y /A, B y /B) con altísima inmunidad al ruido y cables de hasta 100m.</p>
+      </div>
+      <div class="gloss-card">
+        <span class="gloss-term">Open Collector (Colector Abierto)</span>
+        <p>Salida basada en transistor NPN sin pull-up interna; permite adaptar diferentes niveles de voltaje (5V, 12V, 24V).</p>
+      </div>
+      <div class="gloss-card">
+        <span class="gloss-term">Código Gray</span>
+        <p>Sistema de numeración binario donde dos números consecutivos difieren únicamente en un solo dígito binario.</p>
+      </div>
+      <div class="gloss-card">
+        <span class="gloss-term">Single-turn vs Multi-turn</span>
+        <p>Single-turn mide la posición en una vuelta (0 a 360°). Multi-turn además registra cuántas vueltas completas se han dado.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <div class="brand-title">ENCODER<span class="accent-text">LAB</span></div>
+        <p>Guía Técnica Interactiva y Laboratorio Virtual de Automatización.</p>
+      </div>
+      <div class="footer-right">
+        <button class="btn-scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"></polyline></svg>
+          Volver arriba
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
